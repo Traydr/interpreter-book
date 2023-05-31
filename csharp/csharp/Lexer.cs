@@ -10,14 +10,48 @@ public class Lexer
     public Lexer(string input)
     {
         _input = input;
+        ReadChar();
     }
 
     public Token NextToken()
     {
-        return new Token(TokenType.Illegal, "");
+        Token tok = new Token(TokenType.Illegal, "");
+        switch (_ch)
+        {
+            case '=':
+                tok = new Token(TokenType.Assign, _ch);
+                break;
+            case ';':
+                tok = new Token(TokenType.Semicolon, _ch);
+                break;
+            case '(':
+                tok = new Token(TokenType.Lparen, _ch);
+                break;
+            case ')':
+                tok = new Token(TokenType.Rparen, _ch);
+                break;
+            case ',':
+                tok = new Token(TokenType.Comma, _ch);
+                break;
+            case '+':
+                tok = new Token(TokenType.Plus, _ch);
+                break;
+            case '{':
+                tok = new Token(TokenType.Lsquirly, _ch);
+                break;
+            case '}':
+                tok = new Token(TokenType.Rsquirly, _ch);
+                break;
+            case '\0':
+                tok = new Token(TokenType.Eof, "");
+                break;
+        }
+
+        ReadChar();
+        return tok;
     }
 
-    public void ReadChar()
+    private void ReadChar()
     {
         if (_readPosition >= _input.Length)
         {
