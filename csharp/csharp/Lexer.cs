@@ -55,6 +55,11 @@ public class Lexer
                     tok = new Token(Token.LookupIdent(literal), literal);
                     return tok;
                 }
+                else if (IsDigit(_ch))
+                {
+                    tok = new Token(TokenType.Int, ReadNumber());
+                    return tok;
+                }
                 else
                 {
                     tok = new Token(TokenType.Illegal, _ch);
@@ -82,7 +87,16 @@ public class Lexer
         {
             ReadChar();
         }
+        return _input.Substring(position, _position - position);
+    }
 
+    private string ReadNumber()
+    {
+        int position = _position;
+        while (IsDigit(_ch))
+        {
+            ReadChar();
+        }
         return _input.Substring(position, _position - position);
     }
 
@@ -104,5 +118,10 @@ public class Lexer
     private bool IsLetter(char c)
     {
         return char.IsLetter(c) || c == '_';
+    }
+
+    private bool IsDigit(char c)
+    {
+        return char.IsDigit(c);
     }
 }
