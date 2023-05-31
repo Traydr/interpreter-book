@@ -45,10 +45,34 @@ public class Lexer
             case '\0':
                 tok = new Token(TokenType.Eof, "");
                 break;
+            default:
+                if (IsLetter(_ch))
+                {
+                    string literal = ReadIdentifier();
+                    tok = new Token(Token.LookupIdent(literal), literal);
+                    return tok;
+                }
+                else
+                {
+                    tok = new Token(TokenType.Illegal, _ch);
+                }
+
+                break;
         }
 
         ReadChar();
         return tok;
+    }
+
+    private string ReadIdentifier()
+    {
+        int position = _position;
+        while (IsLetter(_ch))
+        {
+            ReadChar();
+        }
+
+        return _input.Substring(position, _position - position);
     }
 
     private void ReadChar()
@@ -64,5 +88,10 @@ public class Lexer
 
         _position = _readPosition;
         _readPosition++;
+    }
+
+    private bool IsLetter(char c)
+    {
+        return char.IsLetter(c) || c == '_';
     }
 }
