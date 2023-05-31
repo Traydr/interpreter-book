@@ -16,6 +16,9 @@ public class Lexer
     public Token NextToken()
     {
         Token tok = new Token(TokenType.Illegal, "");
+
+        SkipWhitespace();
+
         switch (_ch)
         {
             case '=':
@@ -62,6 +65,14 @@ public class Lexer
 
         ReadChar();
         return tok;
+    }
+
+    private void SkipWhitespace()
+    {
+        while (char.IsWhiteSpace(_ch))
+        {
+            ReadChar();
+        }
     }
 
     private string ReadIdentifier()
