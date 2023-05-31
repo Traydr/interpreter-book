@@ -83,5 +83,8 @@ public class Tests
             new Token(TokenType.Semicolon, ';'),
             new Token(TokenType.Eof, ""),
         };
+
+        TestUtils.CompareExpectedTokens(tokens, input);
+        Assert.Pass();
     }
 }
