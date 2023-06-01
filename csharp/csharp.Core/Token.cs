@@ -21,4 +21,9 @@ public record Token(TokenType Type, string Literal)
     {
         return _keywords.TryGetValue(ident, out TokenType tokenType) ? tokenType : TokenType.Ident;
     }
+
+    public override string ToString()
+    {
+        return  $"Type:{Type} Literal:{Literal}";
+    }
 }
