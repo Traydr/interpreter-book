@@ -6,6 +6,11 @@ public record Token(TokenType Type, string Literal)
     {
         { "fn", TokenType.Function },
         { "let", TokenType.Let },
+        { "true", TokenType.True },
+        { "false", TokenType.False },
+        { "if", TokenType.If },
+        { "else", TokenType.Else },
+        { "return", TokenType.Return },
     };
 
     public Token(TokenType type, char literal) : this(type, literal.ToString())
