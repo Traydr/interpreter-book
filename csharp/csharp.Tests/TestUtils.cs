@@ -1,6 +1,8 @@
-﻿namespace csharp.Test;
+﻿using csharp.Core;
 
-public class TestUtils
+namespace csharp.Test;
+
+public static class TestUtils
 {
     public static void CompareExpectedTokens(List<Token> expected, string input)
     {

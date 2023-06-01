@@ -1,3 +1,5 @@
+using csharp.Core;
+
 namespace csharp.Test;
 
 public class Tests

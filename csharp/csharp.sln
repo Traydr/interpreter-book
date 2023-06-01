@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "csharp", "csharp\csharp.csproj", "{DB95E4F7-E9B2-40AC-8CD9-ACEDBC7C0BD9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "csharp.Core", "csharp.Core\csharp.Core.csproj", "{DB95E4F7-E9B2-40AC-8CD9-ACEDBC7C0BD9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "csharp.Tests", "csharp.Tests\csharp.Tests.csproj", "{DD01B5E4-2E51-43B9-8F79-EC8038F49357}"
 EndProject

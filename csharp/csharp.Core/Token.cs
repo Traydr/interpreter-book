@@ -1,4 +1,4 @@
-﻿namespace csharp;
+﻿namespace csharp.Core;
 
 public record Token(TokenType Type, string Literal)
 {
