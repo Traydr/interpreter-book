@@ -22,7 +22,18 @@ public class Lexer
         switch (_ch)
         {
             case '=':
-                tok = new Token(TokenType.Assign, _ch);
+                if (PeakChar() == '=')
+                {
+                    char ch = _ch;
+                    ReadChar();
+                    string literal = $"{ch}{_ch}";
+                    tok = new Token(TokenType.Equal, literal);
+                }
+                else
+                {
+                    tok = new Token(TokenType.Assign, _ch);
+                }
+
                 break;
             case '+':
                 tok = new Token(TokenType.Plus, _ch);
@@ -31,7 +42,18 @@ public class Lexer
                 tok = new Token(TokenType.Minus, _ch);
                 break;
             case '!':
-                tok = new Token(TokenType.Bang, _ch);
+                if (PeakChar() == '=')
+                {
+                    char ch = _ch;
+                    ReadChar();
+                    string literal = $"{ch}{_ch}";
+                    tok = new Token(TokenType.NotEqual, literal);
+                }
+                else
+                {
+                    tok = new Token(TokenType.Bang, _ch);
+                }
+
                 break;
             case '/':
                 tok = new Token(TokenType.ForwardSlash, _ch);
@@ -95,6 +117,18 @@ public class Lexer
         while (char.IsWhiteSpace(_ch))
         {
             ReadChar();
+        }
+    }
+
+    private char PeakChar()
+    {
+        if (_readPosition >= _input.Length)
+        {
+            return '\0';
+        }
+        else
+        {
+            return _input[_readPosition];
         }
     }
 

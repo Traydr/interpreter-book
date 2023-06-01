@@ -19,6 +19,8 @@ public enum TokenType
 
     LessThan, // <
     GreaterThan, // >
+    Equal, // ==
+    NotEqual, // !=
 
     // Delimiters
     Comma, // ,
