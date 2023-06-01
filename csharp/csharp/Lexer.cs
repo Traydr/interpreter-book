@@ -24,20 +24,38 @@ public class Lexer
             case '=':
                 tok = new Token(TokenType.Assign, _ch);
                 break;
+            case '+':
+                tok = new Token(TokenType.Plus, _ch);
+                break;
+            case '-':
+                tok = new Token(TokenType.Minus, _ch);
+                break;
+            case '!':
+                tok = new Token(TokenType.Bang, _ch);
+                break;
+            case '/':
+                tok = new Token(TokenType.ForwardSlash, _ch);
+                break;
+            case '*':
+                tok = new Token(TokenType.Asterisk, _ch);
+                break;
+            case '<':
+                tok = new Token(TokenType.LessThan, _ch);
+                break;
+            case '>':
+                tok = new Token(TokenType.GreaterThan, _ch);
+                break;
             case ';':
                 tok = new Token(TokenType.Semicolon, _ch);
+                break;
+            case ',':
+                tok = new Token(TokenType.Comma, _ch);
                 break;
             case '(':
                 tok = new Token(TokenType.Lparen, _ch);
                 break;
             case ')':
                 tok = new Token(TokenType.Rparen, _ch);
-                break;
-            case ',':
-                tok = new Token(TokenType.Comma, _ch);
-                break;
-            case '+':
-                tok = new Token(TokenType.Plus, _ch);
                 break;
             case '{':
                 tok = new Token(TokenType.Lsquirly, _ch);
@@ -87,6 +105,7 @@ public class Lexer
         {
             ReadChar();
         }
+
         return _input.Substring(position, _position - position);
     }
 
@@ -97,6 +116,7 @@ public class Lexer
         {
             ReadChar();
         }
+
         return _input.Substring(position, _position - position);
     }
 

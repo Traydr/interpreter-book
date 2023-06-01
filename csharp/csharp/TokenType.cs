@@ -12,6 +12,13 @@ public enum TokenType
     // Operators
     Assign, // =
     Plus, // +
+    Minus, // -
+    Bang, // !
+    Asterisk, // *
+    ForwardSlash, // /
+
+    LessThan, // <
+    GreaterThan, // >
 
     // Delimiters
     Comma, // ,
