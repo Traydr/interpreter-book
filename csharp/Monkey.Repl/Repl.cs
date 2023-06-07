@@ -1,6 +1,6 @@
-﻿using csharp.Core;
+﻿using Monkey.Core;
 
-namespace csharp.Repl;
+namespace Monkey.Repl;
 
 public class Repl
 {

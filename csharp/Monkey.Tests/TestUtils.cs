@@ -1,6 +1,6 @@
-﻿using csharp.Core;
+﻿using Monkey.Core;
 
-namespace csharp.Test;
+namespace Monkey.Test;
 
 public static class TestUtils
 {

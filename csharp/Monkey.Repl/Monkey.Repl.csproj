@@ -5,10 +5,11 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>Monkey.Repl</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\csharp.Core\csharp.Core.csproj" />
+      <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
     </ItemGroup>
 
 </Project>

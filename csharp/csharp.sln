@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "csharp.Core", "csharp.Core\csharp.Core.csproj", "{DB95E4F7-E9B2-40AC-8CD9-ACEDBC7C0BD9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monkey.Core", "Monkey.Core\Monkey.Core.csproj", "{DB95E4F7-E9B2-40AC-8CD9-ACEDBC7C0BD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "csharp.Tests", "csharp.Tests\csharp.Tests.csproj", "{DD01B5E4-2E51-43B9-8F79-EC8038F49357}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monkey.Tests", "Monkey.Tests\Monkey.Tests.csproj", "{DD01B5E4-2E51-43B9-8F79-EC8038F49357}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "csharp.Repl", "csharp.Repl\csharp.Repl.csproj", "{AE88B65F-A3E9-4C7E-8051-8B43983001EB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monkey.Repl", "Monkey.Repl\Monkey.Repl.csproj", "{AE88B65F-A3E9-4C7E-8051-8B43983001EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

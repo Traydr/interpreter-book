@@ -1,4 +1,4 @@
-﻿namespace csharp.Core;
+﻿namespace Monkey.Core;
 
 public record Token(TokenType Type, string Literal)
 {
