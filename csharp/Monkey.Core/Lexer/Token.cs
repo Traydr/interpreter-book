@@ -2,7 +2,7 @@
 
 public record Token(TokenType Type, string Literal)
 {
-    private static readonly Dictionary<string, TokenType> _keywords = new()
+    private static readonly Dictionary<string, TokenType> Keywords = new()
     {
         { "fn", TokenType.Function },
         { "let", TokenType.Let },
@@ -19,11 +19,11 @@ public record Token(TokenType Type, string Literal)
 
     public static TokenType LookupIdent(string ident)
     {
-        return _keywords.TryGetValue(ident, out TokenType tokenType) ? tokenType : TokenType.Ident;
+        return Keywords.TryGetValue(ident, out TokenType tokenType) ? tokenType : TokenType.Ident;
     }
 
     public override string ToString()
     {
-        return  $"Type:{Type} Literal:{Literal}";
+        return $"Type:{Type} Literal:{Literal}";
     }
 }
