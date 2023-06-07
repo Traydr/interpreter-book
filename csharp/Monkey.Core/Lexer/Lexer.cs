@@ -1,6 +1,4 @@
-﻿using Monkey.Core.Token;
-
-namespace Monkey.Core.Lexer;
+﻿namespace Monkey.Core.Lexer;
 
 public class Lexer
 {
@@ -15,10 +13,9 @@ public class Lexer
         ReadChar();
     }
 
-    public Token.Token NextToken()
+    public Token NextToken()
     {
-        Token.Token tok = new Token.Token(TokenType.Illegal, "");
-
+        Token tok = new Token(TokenType.Illegal, "");
         SkipWhitespace();
 
         switch (_ch)
@@ -29,19 +26,19 @@ public class Lexer
                     char ch = _ch;
                     ReadChar();
                     string literal = $"{ch}{_ch}";
-                    tok = new Token.Token(TokenType.Equal, literal);
+                    tok = new Token(TokenType.Equal, literal);
                 }
                 else
                 {
-                    tok = new Token.Token(TokenType.Assign, _ch);
+                    tok = new Token(TokenType.Assign, _ch);
                 }
 
                 break;
             case '+':
-                tok = new Token.Token(TokenType.Plus, _ch);
+                tok = new Token(TokenType.Plus, _ch);
                 break;
             case '-':
-                tok = new Token.Token(TokenType.Minus, _ch);
+                tok = new Token(TokenType.Minus, _ch);
                 break;
             case '!':
                 if (PeakChar() == '=')
@@ -49,62 +46,62 @@ public class Lexer
                     char ch = _ch;
                     ReadChar();
                     string literal = $"{ch}{_ch}";
-                    tok = new Token.Token(TokenType.NotEqual, literal);
+                    tok = new Token(TokenType.NotEqual, literal);
                 }
                 else
                 {
-                    tok = new Token.Token(TokenType.Bang, _ch);
+                    tok = new Token(TokenType.Bang, _ch);
                 }
 
                 break;
             case '/':
-                tok = new Token.Token(TokenType.ForwardSlash, _ch);
+                tok = new Token(TokenType.ForwardSlash, _ch);
                 break;
             case '*':
-                tok = new Token.Token(TokenType.Asterisk, _ch);
+                tok = new Token(TokenType.Asterisk, _ch);
                 break;
             case '<':
-                tok = new Token.Token(TokenType.LessThan, _ch);
+                tok = new Token(TokenType.LessThan, _ch);
                 break;
             case '>':
-                tok = new Token.Token(TokenType.GreaterThan, _ch);
+                tok = new Token(TokenType.GreaterThan, _ch);
                 break;
             case ';':
-                tok = new Token.Token(TokenType.Semicolon, _ch);
+                tok = new Token(TokenType.Semicolon, _ch);
                 break;
             case ',':
-                tok = new Token.Token(TokenType.Comma, _ch);
+                tok = new Token(TokenType.Comma, _ch);
                 break;
             case '(':
-                tok = new Token.Token(TokenType.Lparen, _ch);
+                tok = new Token(TokenType.Lparen, _ch);
                 break;
             case ')':
-                tok = new Token.Token(TokenType.Rparen, _ch);
+                tok = new Token(TokenType.Rparen, _ch);
                 break;
             case '{':
-                tok = new Token.Token(TokenType.Lsquirly, _ch);
+                tok = new Token(TokenType.Lsquirly, _ch);
                 break;
             case '}':
-                tok = new Token.Token(TokenType.Rsquirly, _ch);
+                tok = new Token(TokenType.Rsquirly, _ch);
                 break;
             case '\0':
-                tok = new Token.Token(TokenType.Eof, "");
+                tok = new Token(TokenType.Eof, "");
                 break;
             default:
                 if (IsLetter(_ch))
                 {
                     string literal = ReadIdentifier();
-                    tok = new Token.Token(Token.Token.LookupIdent(literal), literal);
+                    tok = new Token(Token.LookupIdent(literal), literal);
                     return tok;
                 }
                 else if (IsDigit(_ch))
                 {
-                    tok = new Token.Token(TokenType.Int, ReadNumber());
+                    tok = new Token(TokenType.Int, ReadNumber());
                     return tok;
                 }
                 else
                 {
-                    tok = new Token.Token(TokenType.Illegal, _ch);
+                    tok = new Token(TokenType.Illegal, _ch);
                 }
 
                 break;
@@ -173,11 +170,11 @@ public class Lexer
 
     private bool IsLetter(char c)
     {
-        return char.IsLetter(c) || c == '_';
+        return char.IsAsciiLetter(c) || c == '_';
     }
 
     private bool IsDigit(char c)
     {
-        return char.IsDigit(c);
+        return char.IsAsciiDigit(c);
     }
 }

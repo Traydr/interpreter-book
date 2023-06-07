@@ -1,4 +1,4 @@
-﻿namespace Monkey.Core.Token;
+﻿namespace Monkey.Core.Lexer;
 
 public record Token(TokenType Type, string Literal)
 {

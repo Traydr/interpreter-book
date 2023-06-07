@@ -1,5 +1,5 @@
 using Monkey.Core;
-using Monkey.Core.Token;
+using Monkey.Core.Lexer;
 
 namespace Monkey.Test;
 
