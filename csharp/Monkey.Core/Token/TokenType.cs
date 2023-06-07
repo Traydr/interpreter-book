@@ -1,4 +1,4 @@
-﻿namespace Monkey.Core;
+﻿namespace Monkey.Core.Token;
 
 public enum TokenType
 {
