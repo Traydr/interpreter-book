@@ -5,12 +5,12 @@ namespace Monkey.Core.Parser;
 public class Parser
 {
     private Lexer.Lexer _lexer;
-    private Token _currentToken;
-    private Token _peekToken;
+    private Token? _currentToken;
+    private Token? _peekToken;
 
-    public Parser(string input)
+    public Parser(Lexer.Lexer lexer)
     {
-        _lexer = new Lexer.Lexer(input);
+        _lexer = lexer;
 
         NextToken();
         NextToken();
@@ -24,6 +24,8 @@ public class Parser
 
     public Ast.Program ParseProgram()
     {
-        return new Ast.Program(Array.Empty<Ast.Statement>());
+        Ast.Program program = new Ast.Program(new List<Ast.Statement>());
+
+        return program;
     }
 }

@@ -16,9 +16,9 @@ public class Ast
         public string TokenLiteral => Token.Literal;
     }
 
-    public record Program(Statement[] Statements) : Node(new Token(TokenType.Eof, ""))
+    public record Program(List<Statement> Statements) : Node(new Token(TokenType.Eof, ""))
     {
-        public string TokenLiteral => Statements.Length > 0 ? Statements[0].TokenLiteral : "";
+        public string TokenLiteral => Statements.Any() ? Statements[0].TokenLiteral : "";
     }
 
     public record LetStatement
