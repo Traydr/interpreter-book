@@ -121,14 +121,7 @@ public class Lexer
 
     private char PeakChar()
     {
-        if (_readPosition >= _input.Length)
-        {
-            return '\0';
-        }
-        else
-        {
-            return _input[_readPosition];
-        }
+        return _readPosition >= _input.Length ? '\0' : _input[_readPosition];
     }
 
     private string ReadIdentifier()
@@ -155,15 +148,7 @@ public class Lexer
 
     private void ReadChar()
     {
-        if (_readPosition >= _input.Length)
-        {
-            _ch = '\0';
-        }
-        else
-        {
-            _ch = _input[_readPosition];
-        }
-
+        _ch = _readPosition >= _input.Length ? '\0' : _input[_readPosition];
         _position = _readPosition;
         _readPosition++;
     }
