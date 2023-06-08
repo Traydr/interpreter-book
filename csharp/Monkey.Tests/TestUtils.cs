@@ -1,4 +1,5 @@
-﻿using Monkey.Core;
+﻿using System.Text;
+using Monkey.Core;
 using Monkey.Core.Lexer;
 using Monkey.Core.Parser;
 
@@ -54,5 +55,23 @@ public static class TestUtils
             Assert.Fail(
                 $"Expected Name.TokenLiteral = {name}, got {letStatement.Name.TokenLiteral}");
         }
+    }
+
+    public static void CheckParserErrors(List<string> errors)
+    {
+        if (errors.Count == 0)
+        {
+            return;
+        }
+
+        StringBuilder errorBuilder = new StringBuilder();
+        errorBuilder.AppendLine($"parser has {errors.Count} errors:");
+        foreach (var error in errors)
+        {
+                errorBuilder.Append("parser error: ");
+                errorBuilder.AppendLine(error);
+        }
+
+        Assert.Fail(errorBuilder.ToString());
     }
 }

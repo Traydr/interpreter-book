@@ -4,13 +4,15 @@ namespace Monkey.Core.Parser;
 
 public class Parser
 {
-    private Lexer.Lexer _lexer;
+    private readonly Lexer.Lexer _lexer;
     private Token _currentToken;
     private Token _peekToken;
+    private List<string> _errors;
 
     public Parser(Lexer.Lexer lexer)
     {
         _lexer = lexer;
+        _errors = new List<string>();
 
         _currentToken = new Token(TokenType.Illegal, "");
         _peekToken = new Token(TokenType.Illegal, "");
@@ -42,6 +44,17 @@ public class Parser
         }
 
         return program;
+    }
+
+    public List<string> Errors()
+    {
+        return _errors;
+    }
+
+    private void PeekError(TokenType type)
+    {
+        string message = $"Expected next token to be {type}, got {_peekToken.Type}";
+        _errors.Add(message);
     }
 
     private Ast.Statement? ParseStatement()
@@ -77,17 +90,17 @@ public class Parser
         }
 
         // TODO This return should not include a null
-        return  new Ast.LetStatement(token, name, null);
+        return new Ast.LetStatement(token, name, null);
     }
 
     private bool IsCurrentTokenOfType(TokenType type)
     {
-        return  _currentToken.Type == type;
+        return _currentToken.Type == type;
     }
 
     private bool IsPeekTokenOfType(TokenType type)
     {
-        return  _peekToken.Type == type;
+        return _peekToken.Type == type;
     }
 
     private bool ExpectPeekTokenOfType(TokenType type)
@@ -98,6 +111,7 @@ public class Parser
             return true;
         }
 
+        PeekError(type);
         return false;
     }
 }

@@ -16,6 +16,7 @@ public class ParserTests
         Lexer lexer = new Lexer(input);
         Parser parser = new Parser(lexer);
         Ast.Program program = parser.ParseProgram();
+        TestUtils.CheckParserErrors(parser.Errors());
 
         if (program.Statements.Count != 3)
         {
