@@ -64,6 +64,9 @@ public class Parser
             case TokenType.Let:
                 return ParseLetStatement();
                 break;
+            case TokenType.Return:
+                return ParseReturnStatement();
+                break;
             default:
                 return null;
                 break;
@@ -91,6 +94,19 @@ public class Parser
 
         // TODO This return should not include a null
         return new Ast.LetStatement(token, name, null);
+    }
+
+
+    private Ast.ReturnStatement? ParseReturnStatement()
+    {
+        Ast.ReturnStatement statement = new Ast.ReturnStatement(_currentToken, null);
+        NextToken();
+
+        while (!IsCurrentTokenOfType(TokenType.Semicolon))
+        {
+            NextToken();
+        }
+        return statement;
     }
 
     private bool IsCurrentTokenOfType(TokenType type)

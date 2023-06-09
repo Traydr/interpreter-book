@@ -31,4 +31,9 @@ public class Ast
     {
         public new string TokenLiteral => Token.Literal;
     }
+
+    public record ReturnStatement(Token Token, Expression ReturnValue) : Statement(Token)
+    {
+        public new string TokenLiteral => Token.Literal;
+    }
 }
