@@ -99,6 +99,7 @@ public class Parser
 
     private Ast.ReturnStatement? ParseReturnStatement()
     {
+        // TODO This return should not include a null
         Ast.ReturnStatement statement = new Ast.ReturnStatement(_currentToken, null);
         NextToken();
 
