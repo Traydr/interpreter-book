@@ -3,13 +3,8 @@ using Monkey.Core.Lexer;
 
 namespace Monkey.Test;
 
-public class Tests
+public class LexerTests
 {
-    [SetUp]
-    public void Setup()
-    {
-    }
-
     [Test]
     public void TestSymbols()
     {
