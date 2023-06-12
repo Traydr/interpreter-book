@@ -53,8 +53,6 @@ public class ParserTests
                 $"Expected 3 elements, got {program.Statements.Count}");
         }
 
-        List<string> expectedIdents = new List<string>() { "x", "y", "foobar" };
-
         foreach (var statement in program.Statements)
         {
             if (statement.GetType() != typeof(Ast.ReturnStatement))
