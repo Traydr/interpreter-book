@@ -7,6 +7,11 @@ namespace Monkey.Test;
 
 public static class TestUtils
 {
+    /// <summary>
+    /// Compares a list of tokens, and checks they are in the same order
+    /// </summary>
+    /// <param name="expected">List of tokens that are expected</param>
+    /// <param name="input">Input to be passed to a lexer</param>
     public static void CompareExpectedTokens(List<Token> expected, string input)
     {
         Lexer lexer = new Lexer(input);
@@ -30,9 +35,14 @@ public static class TestUtils
         }
     }
 
+    /// <summary>
+    /// Checks any given statement to be a letStatement with the correct name,
+    /// if anything is incorrect, then the test fails
+    /// </summary>
+    /// <param name="statement">Statement to check</param>
+    /// <param name="name"></param>
     public static void CompareLetStatement(Ast.Statement statement, string name)
     {
-
         if (statement.TokenLiteral != "let")
         {
             Assert.Fail($"Expected let Literal, got {statement.TokenLiteral}");
@@ -57,6 +67,10 @@ public static class TestUtils
         }
     }
 
+    /// <summary>
+    /// Checks through the errors given ( if any ) and fails the test
+    /// </summary>
+    /// <param name="errors">List of errors from the parser</param>
     public static void CheckParserErrors(List<string> errors)
     {
         if (errors.Count == 0)
