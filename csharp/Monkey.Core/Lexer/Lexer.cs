@@ -94,16 +94,14 @@ public class Lexer
                     tok = new Token(Token.LookupIdent(literal), literal);
                     return tok;
                 }
-                else if (IsDigit(_ch))
+
+                if (IsDigit(_ch))
                 {
                     tok = new Token(TokenType.Int, ReadNumber());
                     return tok;
                 }
-                else
-                {
-                    tok = new Token(TokenType.Illegal, _ch);
-                }
 
+                tok = new Token(TokenType.Illegal, _ch);
                 break;
         }
 
