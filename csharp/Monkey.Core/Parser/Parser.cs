@@ -34,23 +34,23 @@ public class Parser
     /// Iterates through all the tokens and turns all valid ones into statements or expressions
     /// </summary>
     /// <returns>A program with all valid statements</returns>
-    public Ast.Program ParseProgram()
+    public Ast ParseProgram()
     {
-        Ast.Program program = new Ast.Program(new List<Ast.Statement>());
+        List<IStatement> statements = new List<IStatement>();
 
         while (_currentToken.Type != TokenType.Eof)
         {
-            Ast.Statement? statement = ParseStatement();
+            IStatement? statement = ParseStatement();
 
             if (statement is not null)
             {
-                program.Statements.Add(statement);
+                statements.Add(statement);
             }
 
             NextToken();
         }
 
-        return program;
+        return new Ast(statements);
     }
 
     /// <summary>
@@ -76,23 +76,17 @@ public class Parser
     /// Parses statements bases on the token
     /// </summary>
     /// <returns>A statement or null if it was an invalid statement</returns>
-    private Ast.Statement? ParseStatement()
+    private IStatement? ParseStatement()
     {
-        switch (_currentToken.Type)
+        return _currentToken.Type switch
         {
-            case TokenType.Let:
-                return ParseLetStatement();
-                break;
-            case TokenType.Return:
-                return ParseReturnStatement();
-                break;
-            default:
-                return null;
-                break;
-        }
+            TokenType.Let => ParseLetStatement(),
+            TokenType.Return => ParseReturnStatement(),
+            _ => null
+        };
     }
 
-    private Ast.LetStatement? ParseLetStatement()
+    private LetStatement? ParseLetStatement()
     {
         var token = _currentToken;
         if (!ExpectPeekTokenOfType(TokenType.Ident))
@@ -100,7 +94,7 @@ public class Parser
             return null;
         }
 
-        var name = new Ast.Identifier(_currentToken, _currentToken.Literal);
+        var name = new Identifier { Token = _currentToken, Value = _currentToken.Literal };
         if (!ExpectPeekTokenOfType(TokenType.Assign))
         {
             return null;
@@ -112,14 +106,14 @@ public class Parser
         }
 
         // TODO This return should not include a null
-        return new Ast.LetStatement(token, name, null);
+        return new LetStatement { Token = token, Name = name };
     }
 
 
-    private Ast.ReturnStatement? ParseReturnStatement()
+    private ReturnStatement? ParseReturnStatement()
     {
         // TODO This return should not include a null
-        Ast.ReturnStatement statement = new Ast.ReturnStatement(_currentToken, null);
+        ReturnStatement statement = new ReturnStatement { Token = _currentToken };
         NextToken();
 
         while (!IsCurrentTokenOfType(TokenType.Semicolon))

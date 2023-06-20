@@ -41,29 +41,29 @@ public static class TestUtils
     /// </summary>
     /// <param name="statement">Statement to check</param>
     /// <param name="name"></param>
-    public static void CompareLetStatement(Ast.Statement statement, string name)
+    public static void CompareLetStatement(IStatement statement, string name)
     {
-        if (statement.TokenLiteral != "let")
+        if (statement.Token.Literal != "let")
         {
-            Assert.Fail($"Expected let Literal, got {statement.TokenLiteral}");
+            Assert.Fail($"Expected let Literal, got {statement.Token.Literal}");
         }
 
-        if (statement.GetType() != typeof(Ast.LetStatement))
+        if (statement.GetType() != typeof(LetStatement))
         {
             Assert.Fail($"Expected let Type, got {statement.GetType()}");
         }
 
-        Ast.LetStatement letStatement = (statement as Ast.LetStatement)!;
+        LetStatement letStatement = (statement as LetStatement)!;
 
         if (letStatement.Name.Value != name)
         {
             Assert.Fail($"Expected Name.Value = {name}, got {letStatement.Name.Value}");
         }
 
-        if (letStatement.Name.TokenLiteral != name)
+        if (letStatement.Name.Token.Literal != name)
         {
             Assert.Fail(
-                $"Expected Name.TokenLiteral = {name}, got {letStatement.Name.TokenLiteral}");
+                $"Expected Name.TokenLiteral = {name}, got {letStatement.Name.Token.Literal}");
         }
     }
 

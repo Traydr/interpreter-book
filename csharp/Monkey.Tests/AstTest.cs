@@ -8,16 +8,27 @@ public class AstTest
     [Test]
     public void TestString()
     {
-        Ast.Program program = new Ast.Program(new List<Ast.Statement>()
+        Ast program = new Ast(new List<IStatement>()
         {
-            new Ast.LetStatement(new Token(TokenType.Let, "let"),
-                new Ast.Identifier(new Token(TokenType.Ident, "myVar"), "myVar"),
-                new Ast.Identifier(new Token(TokenType.Ident, "anotherVar"), "anotherVar")),
+            new LetStatement
+            {
+                Token = new Token(TokenType.Let, "let"),
+                Name = new Identifier
+                {
+                    Token = new Token(TokenType.Ident, "myVar"),
+                    Value = "myVar"
+                },
+                Value = new Identifier
+                {
+                    Token = new Token(TokenType.Ident, "anotherVar"),
+                    Value = "anotherVar"
+                }
+            },
         });
 
-        if (program.String != "let myVar = anotherVar;")
+        if (program.ToString() != "let myVar = anotherVar;")
         {
-            Assert.Fail($"program.String wrong. got {program.String}");
+            Assert.Fail($"program.String wrong. got {program}");
         }
     }
 }

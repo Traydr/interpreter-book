@@ -15,7 +15,7 @@ public class ParserTests
                        """;
         Lexer lexer = new Lexer(input);
         Parser parser = new Parser(lexer);
-        Ast.Program program = parser.ParseProgram();
+        Ast program = parser.ParseProgram();
         TestUtils.CheckParserErrors(parser.Errors());
 
         if (program.Statements.Count != 3)
@@ -44,7 +44,7 @@ public class ParserTests
                        """;
         Lexer lexer = new Lexer(input);
         Parser parser = new Parser(lexer);
-        Ast.Program program = parser.ParseProgram();
+        Ast program = parser.ParseProgram();
         TestUtils.CheckParserErrors(parser.Errors());
 
         if (program.Statements.Count != 3)
@@ -55,14 +55,14 @@ public class ParserTests
 
         foreach (var statement in program.Statements)
         {
-            if (statement.GetType() != typeof(Ast.ReturnStatement))
+            if (statement.GetType() != typeof(ReturnStatement))
             {
                 Assert.Fail($"Expected return Type, got {statement.GetType()}");
             }
 
-            if (statement.TokenLiteral != "return")
+            if (statement.Token.Literal != "return")
             {
-                Assert.Fail($"Expected return Literal, got {statement.TokenLiteral}");
+                Assert.Fail($"Expected return Literal, got {statement.Token.Literal}");
             }
         }
 
