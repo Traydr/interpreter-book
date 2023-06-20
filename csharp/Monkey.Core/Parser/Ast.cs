@@ -21,12 +21,6 @@ public class Identifier : IExpression
     public required Token Token { get; set; }
     public required string Value { get; set; }
 
-    public Identifier(Token token, string value)
-    {
-        Token = token;
-        Value = value;
-    }
-
     public override string ToString() => Value;
 }
 
@@ -35,13 +29,6 @@ public class LetStatement : IStatement
     public required Token Token { get; set; }
     public required Identifier Name { get; set; }
     public IExpression? Value { get; set; }
-
-    public LetStatement(Token token, Identifier name, IExpression? value)
-    {
-        Token = token;
-        Name = name;
-        Value = value;
-    }
 
     public override string ToString()
     {
@@ -58,7 +45,7 @@ public class LetStatement : IStatement
 
 public class ReturnStatement : IStatement
 {
-    public Token Token { get; set; }
+    public required Token Token { get; set; }
     public IExpression? Expression { get; set; }
 
     public override string ToString()
@@ -76,7 +63,7 @@ public class ReturnStatement : IStatement
 
 public class ExpressionStatement : IStatement
 {
-    public Token Token { get; set; }
+    public required Token Token { get; set; }
     public IExpression? Expression { get; set; }
 
     public override string ToString()
