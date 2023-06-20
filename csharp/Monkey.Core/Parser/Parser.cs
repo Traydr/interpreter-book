@@ -2,12 +2,18 @@
 
 namespace Monkey.Core.Parser;
 
+using InfixFn = Func<IExpression, IExpression>;
+using PrefixFn = Func<IExpression>;
+
 public class Parser
 {
     private readonly Lexer.Lexer _lexer;
     private Token _currentToken;
     private Token _peekToken;
     private List<string> _errors;
+
+    private Dictionary<TokenType, PrefixFn> _prefixParseFns;
+    private Dictionary<TokenType, InfixFn> _infixParseFns;
 
     public Parser(Lexer.Lexer lexer)
     {
@@ -16,6 +22,15 @@ public class Parser
 
         _currentToken = new Token(TokenType.Illegal, "");
         _peekToken = new Token(TokenType.Illegal, "");
+
+        _prefixParseFns = new Dictionary<TokenType, PrefixFn>()
+        {
+
+        };
+        _infixParseFns = new Dictionary<TokenType, InfixFn>()
+        {
+
+        };
 
         NextToken();
         NextToken();
