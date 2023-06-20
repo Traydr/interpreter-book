@@ -5,6 +5,17 @@ namespace Monkey.Core.Parser;
 using InfixFn = Func<IExpression, IExpression>;
 using PrefixFn = Func<IExpression>;
 
+enum Precedence
+{
+    Lowest,
+    Equals, // ==
+    LessGreater, // > or <
+    Sum, // +
+    Product, // *
+    Prefix, // -X or !X
+    Call, // myFunction(X)
+}
+
 public class Parser
 {
     private readonly Lexer.Lexer _lexer;
@@ -25,11 +36,10 @@ public class Parser
 
         _prefixParseFns = new Dictionary<TokenType, PrefixFn>()
         {
-
+            { TokenType.Ident, ParseIdentifier },
         };
         _infixParseFns = new Dictionary<TokenType, InfixFn>()
         {
-
         };
 
         NextToken();
@@ -97,7 +107,7 @@ public class Parser
         {
             TokenType.Let => ParseLetStatement(),
             TokenType.Return => ParseReturnStatement(),
-            _ => null
+            _ => ParseExpressionStatement(),
         };
     }
 
@@ -137,6 +147,38 @@ public class Parser
         }
 
         return statement;
+    }
+
+    private ExpressionStatement ParseExpressionStatement()
+    {
+        ExpressionStatement statement = new ExpressionStatement
+        {
+            Token = _currentToken,
+            Expression = ParseExpression(Precedence.Lowest)
+        };
+
+        while (IsPeekTokenOfType(TokenType.Semicolon))
+        {
+            NextToken();
+        }
+
+        return statement;
+    }
+
+    private IExpression? ParseExpression(Precedence precedence)
+    {
+        if (!_prefixParseFns.TryGetValue(_currentToken.Type, out PrefixFn prefix))
+        {
+            return null;
+        }
+
+        var lefExp = prefix();
+        return lefExp;
+    }
+
+    private IExpression ParseIdentifier()
+    {
+        return new Identifier() { Token = _currentToken, Value = _currentToken.Literal };
     }
 
     /// <summary>
