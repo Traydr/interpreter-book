@@ -1,51 +1,111 @@
-﻿using Monkey.Core.Lexer;
+﻿using System.Text;
+using Monkey.Core.Lexer;
 
 namespace Monkey.Core.Parser;
 
+public interface INode
+{
+    Token Token { get; set; }
+}
+
+public interface IStatement : INode
+{
+}
+
+public interface IExpression : INode
+{
+}
+
+public class Identifier : IExpression
+{
+    public required Token Token { get; set; }
+    public required string Value { get; set; }
+
+    public Identifier(Token token, string value)
+    {
+        Token = token;
+        Value = value;
+    }
+
+    public override string ToString() => Value;
+}
+
+public class LetStatement : IStatement
+{
+    public required Token Token { get; set; }
+    public required Identifier Name { get; set; }
+    public IExpression? Value { get; set; }
+
+    public LetStatement(Token token, Identifier name, IExpression? value)
+    {
+        Token = token;
+        Name = name;
+        Value = value;
+    }
+
+    public override string ToString()
+    {
+        var builder = new StringBuilder($"{Token.Literal} {Name} = ");
+        if (Value is not null)
+        {
+            builder.Append(Value);
+        }
+
+        builder.Append(';');
+        return builder.ToString();
+    }
+}
+
+public class ReturnStatement : IStatement
+{
+    public Token Token { get; set; }
+    public IExpression? Expression { get; set; }
+
+    public override string ToString()
+    {
+        var builder = new StringBuilder($"{Token.Literal} ");
+        if (Expression is not null)
+        {
+            builder.Append(Expression);
+        }
+
+        builder.Append(';');
+        return builder.ToString();
+    }
+}
+
+public class ExpressionStatement : IStatement
+{
+    public Token Token { get; set; }
+    public IExpression? Expression { get; set; }
+
+    public override string ToString()
+    {
+        return Expression?.ToString() ?? "";
+    }
+}
+
 public class Ast
 {
-    public record Node(Token Token);
+    public List<IStatement> Statements { get; private set; } = new();
 
-    public record Statement(Token Token) : Node(Token)
+    public Ast(IEnumerable<IStatement>? statements)
     {
-        public string TokenLiteral => Token.Literal;
-        public virtual string String => Token.Literal;
+        if (statements is not null)
+        {
+            Statements.AddRange(statements);
+        }
     }
 
-    public record Expression(Token Token) : Node(Token)
+    public override string ToString()
     {
-        public string TokenLiteral => Token.Literal;
-        public virtual string String => Token.Literal;
-    }
+        var builder = new StringBuilder();
 
-    public record Program(List<Statement> Statements) : Node(new Token(TokenType.Eof, ""))
-    {
-        public string TokenLiteral => Statements.Any() ? Statements[0].TokenLiteral : "";
-        public string String => String.Join("", Statements.Select(x => x.String));
-    }
+        foreach (var statement in Statements)
+        {
+            builder.Append(statement);
+        }
 
-    public record Identifier(Token Token, string Value) : Expression(Token)
-    {
-        public new string TokenLiteral => Token.Literal;
-        public override string String => $"{Value}";
-    }
-
-    public record LetStatement
-        (Token Token, Identifier Name, Expression Value) : Statement(Token)
-    {
-        public new string TokenLiteral => Token.Literal;
-        public override string String => $"{Token.Literal} {Name.String} = {Value.String};";
-    }
-
-    public record ReturnStatement(Token Token, Expression ReturnValue) : Statement(Token)
-    {
-        public new string TokenLiteral => Token.Literal;
-        public override string String => $"{Token.Literal} {ReturnValue.String};";
-    }
-
-    public record ExpressionStatement(Token Token, Expression Expression) : Statement(Token)
-    {
-        public new string TokenLiteral => Token.Literal;
-        public override string String => $"{Expression.String};";
+        return builder.ToString();
     }
 }
