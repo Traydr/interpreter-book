@@ -37,7 +37,9 @@ public class Parser
         _prefixParseFns = new Dictionary<TokenType, PrefixFn>()
         {
             { TokenType.Ident, ParseIdentifier },
-            { TokenType.Int, ParseIntegerLiteral},
+            { TokenType.Int, ParseIntegerLiteral },
+            { TokenType.Bang, ParsePrefixExpression },
+            { TokenType.Minus, ParsePrefixExpression },
         };
         _infixParseFns = new Dictionary<TokenType, InfixFn>()
         {
@@ -95,6 +97,12 @@ public class Parser
     private void PeekError(TokenType type)
     {
         string message = $"Expected next token to be {type}, got {_peekToken.Type}";
+        _errors.Add(message);
+    }
+
+    private void NoPrefixParseFnError(TokenType type)
+    {
+        string message = $"No prefix parse function for {type} found";
         _errors.Add(message);
     }
 
@@ -168,6 +176,7 @@ public class Parser
     {
         if (!_prefixParseFns.TryGetValue(_currentToken.Type, out PrefixFn prefix))
         {
+            NoPrefixParseFnError(_currentToken.Type);
             return null;
         }
 
@@ -196,6 +205,21 @@ public class Parser
         };
 
         return literal;
+    }
+
+    private IExpression ParsePrefixExpression()
+    {
+        PrefixExpression expression = new PrefixExpression
+        {
+            Token = _currentToken,
+            Operator = _currentToken.Literal,
+            Right = null
+        };
+
+        NextToken();
+
+        expression.Right = ParseExpression(Precedence.Prefix);
+        return expression;
     }
 
     /// <summary>
