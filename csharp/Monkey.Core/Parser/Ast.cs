@@ -87,7 +87,7 @@ public class PrefixExpression : IExpression
 {
     public required Token Token { get; set; }
     public required string Operator { get; set; }
-    public required IExpression Right { get; set; }
+    public required IExpression? Right { get; set; }
 
     public override string ToString()
     {
