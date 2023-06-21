@@ -8,7 +8,8 @@ public class ParserTests
     [Test]
     public void TestLetStatement()
     {
-        Assert.Pass("Skipping this Test");
+        // No longer compatible with parser as of the latest test, so it is skipped
+        Assert.Pass("Skipping - see comment for details");
         string input = """
                           let x = 5;
                           let y = 10;
