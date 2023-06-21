@@ -3,7 +3,7 @@
 namespace Monkey.Core.Parser;
 
 using InfixFn = Func<IExpression, IExpression>;
-using PrefixFn = Func<IExpression>;
+using PrefixFn = Func<IExpression?>;
 
 enum Precedence
 {
@@ -23,8 +23,8 @@ public class Parser
     private Token _peekToken;
     private List<string> _errors;
 
-    private Dictionary<TokenType, PrefixFn> _prefixParseFns;
-    private Dictionary<TokenType, InfixFn> _infixParseFns;
+    private readonly Dictionary<TokenType, PrefixFn> _prefixParseFns;
+    private readonly Dictionary<TokenType, InfixFn> _infixParseFns;
 
     public Parser(Lexer.Lexer lexer)
     {
@@ -37,6 +37,7 @@ public class Parser
         _prefixParseFns = new Dictionary<TokenType, PrefixFn>()
         {
             { TokenType.Ident, ParseIdentifier },
+            { TokenType.Int, ParseIntegerLiteral},
         };
         _infixParseFns = new Dictionary<TokenType, InfixFn>()
         {
@@ -177,6 +178,24 @@ public class Parser
     private IExpression ParseIdentifier()
     {
         return new Identifier() { Token = _currentToken, Value = _currentToken.Literal };
+    }
+
+    private IExpression? ParseIntegerLiteral()
+    {
+        if (!long.TryParse(_currentToken.Literal, out long parsed))
+        {
+            string msg = $"Could not parse {_currentToken.Literal} as integer";
+            _errors.Add(msg);
+            return null;
+        }
+
+        IntegerLiteral literal = new IntegerLiteral
+        {
+            Token = _currentToken,
+            Value = parsed
+        };
+
+        return literal;
     }
 
     /// <summary>

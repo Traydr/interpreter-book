@@ -72,6 +72,17 @@ public class ExpressionStatement : IStatement
     }
 }
 
+public class IntegerLiteral : IExpression
+{
+    public required Token Token { get; set; }
+    public required long Value { get; set; }
+
+    public override string ToString()
+    {
+        return Value.ToString();
+    }
+}
+
 public class Ast
 {
     public List<IStatement> Statements { get; private set; } = new();
