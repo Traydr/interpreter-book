@@ -83,6 +83,18 @@ public class IntegerLiteral : IExpression
     }
 }
 
+public class PrefixExpression : IExpression
+{
+    public required Token Token { get; set; }
+    public required string Operator { get; set; }
+    public required IExpression Right { get; set; }
+
+    public override string ToString()
+    {
+        return $"({Operator}{Right})";
+    }
+}
+
 public class Ast
 {
     public List<IStatement> Statements { get; private set; } = new();

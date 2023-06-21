@@ -143,4 +143,47 @@ public class ParserTests
             Assert.Fail($"Expected literal 5, got {literal.Token.Literal}");
         }
     }
+
+    [Test]
+    public void TestParsingPrefixExpression()
+    {
+        List<(string, string, long)> tests = new()
+        {
+            ("!5", "!", 5),
+            ("-15", "-", 15),
+        };
+
+        foreach (var test in tests)
+        {
+            Lexer lexer = new Lexer(test.Item1);
+            Parser parser = new Parser(lexer);
+            Ast program = parser.ParseProgram();
+            TestUtils.CheckParserErrors(parser.Errors());
+
+            if (program.Statements.Count != 1)
+            {
+                Assert.Fail($"Expected 1 element, got {program.Statements.Count}");
+            }
+
+            if (program.Statements[0].GetType() != typeof(ExpressionStatement))
+            {
+                Assert.Fail($"Expected ExpressionStatement. got {program.Statements[0].GetType()}");
+            }
+
+            ExpressionStatement statement = (ExpressionStatement)program.Statements[0];
+            if (statement.Expression is not null &&
+                statement.Expression.GetType() != typeof(PrefixExpression))
+            {
+                Assert.Fail($"Expected Identifier. got {program.Statements[0].GetType()}");
+            }
+
+            PrefixExpression expression = (PrefixExpression)statement.Expression!;
+            if (expression.Operator != test.Item2)
+            {
+                Assert.Fail($"Expected operator {test.Item2}, got {expression.Operator}");
+            }
+
+            TestUtils.TestIntegerLiteral(expression, test.Item3);
+        }
+    }
 }

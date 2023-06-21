@@ -88,4 +88,24 @@ public static class TestUtils
 
         Assert.Fail(errorBuilder.ToString());
     }
+
+    public static void TestIntegerLiteral(IExpression expression, long value)
+    {
+        if (expression.GetType() != typeof(IntegerLiteral))
+        {
+            Assert.Fail($"Expected IntegerLiteral, got {expression.GetType()}");
+        }
+
+
+        IntegerLiteral literal = (IntegerLiteral) expression;
+        if (literal.Value != value)
+        {
+            Assert.Fail($"Expected {value}, got {literal.Value}");
+        }
+
+        if (literal.Token.Literal != value.ToString())
+        {
+            Assert.Fail($"Expected {value}, got {literal.Token.Literal}");
+        }
+    }
 }
