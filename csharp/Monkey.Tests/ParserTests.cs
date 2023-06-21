@@ -183,7 +183,7 @@ public class ParserTests
                 Assert.Fail($"Expected operator {test.Item2}, got {expression.Operator}");
             }
 
-            TestUtils.TestIntegerLiteral(expression, test.Item3);
+            TestUtils.TestIntegerLiteral(expression.Right, test.Item3);
         }
     }
 }
