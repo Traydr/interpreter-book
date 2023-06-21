@@ -130,14 +130,12 @@ public class Parser
             NextToken();
         }
 
-        // TODO This return should not include a null
         return new LetStatement { Token = token, Name = name };
     }
 
 
     private ReturnStatement? ParseReturnStatement()
     {
-        // TODO This return should not include a null
         ReturnStatement statement = new ReturnStatement { Token = _currentToken };
         NextToken();
 
