@@ -105,4 +105,42 @@ public class ParserTests
             Assert.Fail($"Expected literal foobar, got {identifier.Token.Literal}");
         }
     }
+
+    [Test]
+    public void TestIntegerLiteralExpression()
+    {
+        string input = "5;";
+        Lexer lexer = new Lexer(input);
+        Parser parser = new Parser(lexer);
+        Ast program = parser.ParseProgram();
+        TestUtils.CheckParserErrors(parser.Errors());
+
+        if (program.Statements.Count != 1)
+        {
+            Assert.Fail($"Expected 1 element, got {program.Statements.Count}");
+        }
+
+        if (program.Statements[0].GetType() != typeof(ExpressionStatement))
+        {
+            Assert.Fail($"Expected ExpressionStatement. got {program.Statements[0].GetType()}");
+        }
+
+        ExpressionStatement statement = (ExpressionStatement)program.Statements[0];
+        if (statement.Expression is not null &&
+            statement.Expression.GetType() != typeof(IntegerLiteral))
+        {
+            Assert.Fail($"Expected Identifier. got {program.Statements[0].GetType()}");
+        }
+
+        IntegerLiteral literal = (IntegerLiteral)statement.Expression!;
+        if (literal.Value != 5)
+        {
+            Assert.Fail($"Expected value 5, got {literal.Value}");
+        }
+
+        if (literal.Token.Literal != "5")
+        {
+            Assert.Fail($"Expected literal 5, got {literal.Token.Literal}");
+        }
+    }
 }
