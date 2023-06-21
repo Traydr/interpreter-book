@@ -23,12 +23,14 @@ public static class TestUtils
 
             if (token.Type != expect.Type)
             {
-                Assert.Fail($"Tests[{index}] - TestTokenType Wrong. Expected:{expect.Type}, Got:{token.Type}");
+                Assert.Fail(
+                    $"Tests[{index}] - TestTokenType Wrong. Expected:{expect.Type}, Got:{token.Type}");
             }
 
             if (token.Literal != expect.Literal)
             {
-                Assert.Fail($"Tests[{index}] - Literal Wrong. Expected:{expect.Literal}, Got:{token.Literal}");
+                Assert.Fail(
+                    $"Tests[{index}] - Literal Wrong. Expected:{expect.Literal}, Got:{token.Literal}");
             }
 
             index++;
@@ -82,22 +84,22 @@ public static class TestUtils
         errorBuilder.AppendLine($"parser has {errors.Count} errors:");
         foreach (var error in errors)
         {
-                errorBuilder.Append("parser error: ");
-                errorBuilder.AppendLine(error);
+            errorBuilder.Append("parser error: ");
+            errorBuilder.AppendLine(error);
         }
 
         Assert.Fail(errorBuilder.ToString());
     }
 
-    public static void TestIntegerLiteral(IExpression expression, long value)
+    public static void TestIntegerLiteral(IExpression? expression, long value)
     {
-        if (expression.GetType() != typeof(IntegerLiteral))
+        if (expression != null && expression.GetType() != typeof(IntegerLiteral))
         {
             Assert.Fail($"Expected IntegerLiteral, got {expression.GetType()}");
         }
 
 
-        IntegerLiteral literal = (IntegerLiteral) expression;
+        IntegerLiteral literal = (IntegerLiteral)expression!;
         if (literal.Value != value)
         {
             Assert.Fail($"Expected {value}, got {literal.Value}");
