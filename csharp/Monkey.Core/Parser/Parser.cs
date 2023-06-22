@@ -21,10 +21,11 @@ public class Parser
     private readonly Lexer.Lexer _lexer;
     private Token _currentToken;
     private Token _peekToken;
-    private List<string> _errors;
 
+    private readonly List<string> _errors;
     private readonly Dictionary<TokenType, PrefixFn> _prefixParseFns;
     private readonly Dictionary<TokenType, InfixFn> _infixParseFns;
+    private readonly Dictionary<TokenType, Precedence> _precedences;
 
     public Parser(Lexer.Lexer lexer)
     {
@@ -43,6 +44,25 @@ public class Parser
         };
         _infixParseFns = new Dictionary<TokenType, InfixFn>()
         {
+            { TokenType.Plus, ParseInfixExpression },
+            { TokenType.Minus, ParseInfixExpression },
+            { TokenType.ForwardSlash, ParseInfixExpression },
+            { TokenType.Asterisk, ParseInfixExpression },
+            { TokenType.Equal, ParseInfixExpression },
+            { TokenType.NotEqual, ParseInfixExpression },
+            { TokenType.LessThan, ParseInfixExpression },
+            { TokenType.GreaterThan, ParseInfixExpression },
+        };
+        _precedences = new Dictionary<TokenType, Precedence>()
+        {
+            { TokenType.Equal, Precedence.Equals },
+            { TokenType.NotEqual, Precedence.Equals },
+            { TokenType.LessThan, Precedence.LessGreater },
+            { TokenType.GreaterThan, Precedence.LessGreater },
+            { TokenType.Plus, Precedence.Sum },
+            { TokenType.Minus, Precedence.Sum },
+            { TokenType.ForwardSlash, Precedence.Sum },
+            { TokenType.Asterisk, Precedence.Sum },
         };
 
         NextToken();
@@ -180,8 +200,21 @@ public class Parser
             return null;
         }
 
-        var lefExp = prefix();
-        return lefExp;
+        var leftExp = prefix();
+
+        while (!IsPeekTokenOfType(TokenType.Semicolon) && precedence < PeekPrecedence())
+        {
+            if (!_infixParseFns.TryGetValue(_currentToken.Type, out InfixFn infix))
+            {
+                NoPrefixParseFnError(_currentToken.Type);
+                return leftExp;
+            }
+
+            NextToken();
+            leftExp = infix(leftExp!);
+        }
+
+        return leftExp;
     }
 
     private IExpression ParseIdentifier()
@@ -222,6 +255,22 @@ public class Parser
         return expression;
     }
 
+    private IExpression ParseInfixExpression(IExpression left)
+    {
+        InfixExpression expression = new InfixExpression
+        {
+            Token = _currentToken,
+            Left = left,
+            Operator = _currentToken.Literal,
+            Right = null
+        };
+
+        Precedence precedence = CurrentPrecedence();
+        NextToken();
+        expression.Right = ParseExpression(precedence);
+        return expression;
+    }
+
     /// <summary>
     /// Checks if the current token is input type
     /// </summary>
@@ -257,5 +306,17 @@ public class Parser
 
         PeekError(type);
         return false;
+    }
+
+    private Precedence PeekPrecedence()
+    {
+        bool isPrecedence = _precedences.TryGetValue(_peekToken.Type, out Precedence precedence);
+        return isPrecedence ? precedence : Precedence.Lowest;
+    }
+
+    private Precedence CurrentPrecedence()
+    {
+        bool isPrecedence = _precedences.TryGetValue(_currentToken.Type, out Precedence precedence);
+        return isPrecedence ? precedence : Precedence.Lowest;
     }
 }
