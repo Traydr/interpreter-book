@@ -95,6 +95,20 @@ public class PrefixExpression : IExpression
     }
 }
 
+public class InfixExpression : IExpression
+{
+    public required Token Token { get; set; }
+    public required IExpression? Left { get; set; }
+
+    public required string Operator { get; set; }
+    public required IExpression? Right { get; set; }
+
+    public override string ToString()
+    {
+        return $"({Left} {Operator} {Right})";
+    }
+}
+
 public class Ast
 {
     public List<IStatement> Statements { get; private set; } = new();

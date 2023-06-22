@@ -148,15 +148,15 @@ public class ParserTests
     [Test]
     public void TestParsingPrefixExpression()
     {
-        List<(string, string, long)> tests = new()
+        List<PrefixTest> tests = new()
         {
-            ("!5", "!", 5),
-            ("-15", "-", 15),
+            new () { Input = "!5", Operator = "!", IntegerValue = 5 },
+            new () { Input = "-15", Operator = "-", IntegerValue = 15 },
         };
 
         foreach (var test in tests)
         {
-            Lexer lexer = new Lexer(test.Item1);
+            Lexer lexer = new Lexer(test.Input);
             Parser parser = new Parser(lexer);
             Ast program = parser.ParseProgram();
             TestUtils.CheckParserErrors(parser.Errors());
@@ -175,16 +175,83 @@ public class ParserTests
             if (statement.Expression is not null &&
                 statement.Expression.GetType() != typeof(PrefixExpression))
             {
-                Assert.Fail($"Expected Identifier. got {program.Statements[0].GetType()}");
+                Assert.Fail($"Expected prefix expression. got {program.Statements[0].GetType()}");
             }
 
             PrefixExpression expression = (PrefixExpression)statement.Expression!;
-            if (expression.Operator != test.Item2)
+            if (expression.Operator != test.Operator)
             {
-                Assert.Fail($"Expected operator {test.Item2}, got {expression.Operator}");
+                Assert.Fail($"Expected operator {test.Operator}, got {expression.Operator}");
             }
 
-            TestUtils.TestIntegerLiteral(expression.Right, test.Item3);
+            TestUtils.TestIntegerLiteral(expression.Right, test.IntegerValue);
         }
+    }
+
+    [Test]
+    public void TestParsingInfixExpression()
+    {
+        List<InfixTest> tests = new()
+        {
+            new() { Input = "5 + 5;", LeftValue = 5, Operator = "+", RightValue = 5 },
+            new() { Input = "5 - 5;", LeftValue = 5, Operator = "-", RightValue = 5 },
+            new() { Input = "5 * 5;", LeftValue = 5, Operator = "*", RightValue = 5 },
+            new() { Input = "5 / 5;", LeftValue = 5, Operator = "/", RightValue = 5 },
+            new() { Input = "5 > 5;", LeftValue = 5, Operator = ">", RightValue = 5 },
+            new() { Input = "5 < 5;", LeftValue = 5, Operator = "<", RightValue = 5 },
+            new() { Input = "5 == 5;", LeftValue = 5, Operator = "==", RightValue = 5 },
+            new() { Input = "5 != 5;", LeftValue = 5, Operator = "!=", RightValue = 5 },
+        };
+
+        foreach (var test in tests)
+        {
+            Lexer lexer = new Lexer(test.Input);
+            Parser parser = new Parser(lexer);
+            Ast program = parser.ParseProgram();
+            TestUtils.CheckParserErrors(parser.Errors());
+
+            if (program.Statements.Count != 1)
+            {
+                Assert.Fail($"Expected 1 element, got {program.Statements.Count}");
+            }
+
+            if (program.Statements[0].GetType() != typeof(ExpressionStatement))
+            {
+                Assert.Fail($"Expected ExpressionStatement. got {program.Statements[0].GetType()}");
+            }
+
+            ExpressionStatement statement = (ExpressionStatement)program.Statements[0];
+            if (statement.Expression is not null &&
+                statement.Expression.GetType() != typeof(InfixExpression))
+            {
+                Assert.Fail($"Expected infix expression. got {program.Statements[0].GetType()}");
+            }
+
+            InfixExpression expression = (InfixExpression)statement.Expression!;
+            TestUtils.TestIntegerLiteral(expression.Left, test.LeftValue);
+
+            if (expression.Operator != test.Operator)
+            {
+                Assert.Fail($"Expected operator {test.Operator}, got {expression.Operator}");
+            }
+
+            TestUtils.TestIntegerLiteral(expression.Right, test.RightValue);
+        }
+    }
+
+    // Helper Types
+    public struct InfixTest
+    {
+        public required string Input;
+        public required long LeftValue;
+        public required string Operator;
+        public required long RightValue;
+    }
+
+    public struct PrefixTest
+    {
+        public required string Input;
+        public required string Operator;
+        public required long IntegerValue;
     }
 }
