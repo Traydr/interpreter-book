@@ -150,8 +150,8 @@ public class ParserTests
     {
         List<PrefixTest> tests = new()
         {
-            new () { Input = "!5", Operator = "!", IntegerValue = 5 },
-            new () { Input = "-15", Operator = "-", IntegerValue = 15 },
+            new() { Input = "!5", Operator = "!", IntegerValue = 5 },
+            new() { Input = "-15", Operator = "-", IntegerValue = 15 },
         };
 
         foreach (var test in tests)
@@ -239,6 +239,44 @@ public class ParserTests
         }
     }
 
+    [Test]
+    public void TestOperatorPrecedenceParsing()
+    {
+        List<OperatorPrecedence> tests = new List<OperatorPrecedence>()
+        {
+            new() { Input = "-a * b", Expected = "((-a) * b)" },
+            new() { Input = "!-a", Expected = "(!(-a))" },
+            new() { Input = "a + b + c", Expected = "((a + b) + c)" },
+            new() { Input = "a + b - c", Expected = "((a + b) - c)" },
+            new() { Input = "a * b * c", Expected = "((a * b) * c)" },
+            new() { Input = "a * b / c", Expected = "((a * b) / c)" },
+            new() { Input = "a + b / c", Expected = "(a + (b / c))" },
+            new() { Input = "a + b * c + d / e - f", Expected = "(((a + (b * c)) + (d / e)) - f)" },
+            new() { Input = "3 + 4; -5 * 5", Expected = "(3 + 4)((-5) * 5)" },
+            new() { Input = "5 > 4 == 3 < 4", Expected = "((5 > 4) == (3 < 4))" },
+            new() { Input = "5 < 4 != 3 > 4", Expected = "((5 < 4) != (3 > 4))" },
+            new()
+            {
+                Input = "3 + 4 * 5 == 3 * 1 + 4 * 5",
+                Expected = "((3 + (4 * 5)) == ((3 * 1) + (4 * 5)))"
+            },
+        };
+
+        foreach (OperatorPrecedence test in tests)
+        {
+            Lexer lexer = new Lexer(test.Input);
+            Parser parser = new Parser(lexer);
+            Ast program = parser.ParseProgram();
+            TestUtils.CheckParserErrors(parser.Errors());
+
+            string actual = program.ToString();
+            if (actual != test.Expected)
+            {
+                Assert.Fail($"Expected {test.Expected}, got {actual}");
+            }
+        }
+    }
+
     // Helper Types
     public struct InfixTest
     {
@@ -253,5 +291,11 @@ public class ParserTests
         public required string Input;
         public required string Operator;
         public required long IntegerValue;
+    }
+
+    public struct OperatorPrecedence
+    {
+        public required string Input;
+        public required string Expected;
     }
 }
