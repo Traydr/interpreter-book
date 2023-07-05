@@ -163,7 +163,7 @@ public class Parser
     }
 
 
-    private ReturnStatement? ParseReturnStatement()
+    private ReturnStatement ParseReturnStatement()
     {
         ReturnStatement statement = new ReturnStatement { Token = _currentToken };
         NextToken();
@@ -210,7 +210,7 @@ public class Parser
             }
 
             NextToken();
-            leftExp = infix(leftExp!);
+            leftExp = infix(leftExp);
         }
 
         return leftExp;
