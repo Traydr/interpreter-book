@@ -236,7 +236,7 @@ public class Parser
         };
     }
 
-    private IExpression ParsePrefixExpression()
+    private PrefixExpression ParsePrefixExpression()
     {
         PrefixExpression expression = new PrefixExpression
         {
@@ -251,7 +251,7 @@ public class Parser
         return expression;
     }
 
-    private IExpression ParseInfixExpression(IExpression left)
+    private InfixExpression ParseInfixExpression(IExpression left)
     {
         InfixExpression expression = new InfixExpression
         {
