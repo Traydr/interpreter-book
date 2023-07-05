@@ -61,8 +61,8 @@ public class Parser
             { TokenType.GreaterThan, Precedence.LessGreater },
             { TokenType.Plus, Precedence.Sum },
             { TokenType.Minus, Precedence.Sum },
-            { TokenType.ForwardSlash, Precedence.Sum },
-            { TokenType.Asterisk, Precedence.Sum },
+            { TokenType.ForwardSlash, Precedence.Product },
+            { TokenType.Asterisk, Precedence.Product },
         };
 
         NextToken();
