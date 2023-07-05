@@ -206,7 +206,6 @@ public class Parser
         {
             if (!_infixParseFns.TryGetValue(_currentToken.Type, out InfixFn infix))
             {
-                NoPrefixParseFnError(_currentToken.Type);
                 return leftExp;
             }
 
