@@ -201,10 +201,9 @@ public class Parser
         }
 
         var leftExp = prefix();
-
         while (!IsPeekTokenOfType(TokenType.Semicolon) && precedence < PeekPrecedence())
         {
-            if (!_infixParseFns.TryGetValue(_currentToken.Type, out InfixFn infix))
+            if (!_infixParseFns.TryGetValue(_peekToken.Type, out InfixFn infix))
             {
                 return leftExp;
             }
