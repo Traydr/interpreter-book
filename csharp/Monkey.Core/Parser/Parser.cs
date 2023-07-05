@@ -303,12 +303,20 @@ public class Parser
         return false;
     }
 
+    /// <summary>
+    /// Gives the precedence of the peek token
+    /// </summary>
+    /// <returns>Lowest if the token is not in precedences, otherwise the respective precedence</returns>
     private Precedence PeekPrecedence()
     {
         bool isPrecedence = _precedences.TryGetValue(_peekToken.Type, out Precedence precedence);
         return isPrecedence ? precedence : Precedence.Lowest;
     }
 
+    /// <summary>
+    /// Gives the precedence of the current token
+    /// </summary>
+    /// <returns>Lowest if the token is not in precedences, otherwise the respective precedence</returns>
     private Precedence CurrentPrecedence()
     {
         bool isPrecedence = _precedences.TryGetValue(_currentToken.Type, out Precedence precedence);
