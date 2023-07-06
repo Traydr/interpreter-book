@@ -91,6 +91,11 @@ public static class TestUtils
         Assert.Fail(errorBuilder.ToString());
     }
 
+    /// <summary>
+    /// Tests that the IExpression passed to it is an IntegerLiteral and is equal to the 2nd argument
+    /// </summary>
+    /// <param name="expression">Any IExpression</param>
+    /// <param name="value">Expected long value</param>
     public static void TestIntegerLiteral(IExpression? expression, long value)
     {
         if (expression != null && expression.GetType() != typeof(IntegerLiteral))
