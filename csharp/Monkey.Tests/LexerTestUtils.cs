@@ -5,8 +5,10 @@ using Monkey.Core.Parser;
 
 namespace Monkey.Test;
 
-public static class TestUtils
+public static class LexerTestUtils
 {
+    // Lexer Test Utils
+
     /// <summary>
     /// Compares a list of tokens, and checks they are in the same order
     /// </summary>
@@ -69,50 +71,5 @@ public static class TestUtils
         }
     }
 
-    /// <summary>
-    /// Checks through the errors given ( if any ) and fails the test
-    /// </summary>
-    /// <param name="errors">List of errors from the parser</param>
-    public static void CheckParserErrors(List<string> errors)
-    {
-        if (errors.Count == 0)
-        {
-            return;
-        }
 
-        StringBuilder errorBuilder = new StringBuilder();
-        errorBuilder.AppendLine($"parser has {errors.Count} errors:");
-        foreach (var error in errors)
-        {
-            errorBuilder.Append("parser error: ");
-            errorBuilder.AppendLine(error);
-        }
-
-        Assert.Fail(errorBuilder.ToString());
-    }
-
-    /// <summary>
-    /// Tests that the IExpression passed to it is an IntegerLiteral and is equal to the 2nd argument
-    /// </summary>
-    /// <param name="expression">Any IExpression</param>
-    /// <param name="value">Expected long value</param>
-    public static void TestIntegerLiteral(IExpression? expression, long value)
-    {
-        if (expression != null && expression.GetType() != typeof(IntegerLiteral))
-        {
-            Assert.Fail($"Expected IntegerLiteral, got {expression.GetType()}");
-        }
-
-
-        IntegerLiteral literal = (IntegerLiteral)expression!;
-        if (literal.Value != value)
-        {
-            Assert.Fail($"Expected {value}, got {literal.Value}");
-        }
-
-        if (literal.Token.Literal != value.ToString())
-        {
-            Assert.Fail($"Expected {value}, got {literal.Token.Literal}");
-        }
-    }
 }

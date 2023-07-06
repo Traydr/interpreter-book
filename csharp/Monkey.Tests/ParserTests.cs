@@ -18,7 +18,7 @@ public class ParserTests
         Lexer lexer = new Lexer(input);
         Parser parser = new Parser(lexer);
         Ast program = parser.ParseProgram();
-        TestUtils.CheckParserErrors(parser.Errors());
+        ParserTestUtils.CheckParserErrors(parser.Errors());
 
         if (program.Statements.Count != 3)
         {
@@ -29,7 +29,7 @@ public class ParserTests
 
         for (int i = 0; i < expectedIdents.Count; i++)
         {
-            TestUtils.CompareLetStatement(program.Statements[i], expectedIdents[i]);
+            LexerTestUtils.CompareLetStatement(program.Statements[i], expectedIdents[i]);
         }
 
         Assert.Pass();
@@ -46,7 +46,7 @@ public class ParserTests
         Lexer lexer = new Lexer(input);
         Parser parser = new Parser(lexer);
         Ast program = parser.ParseProgram();
-        TestUtils.CheckParserErrors(parser.Errors());
+        ParserTestUtils.CheckParserErrors(parser.Errors());
 
         if (program.Statements.Count != 3)
         {
@@ -76,7 +76,7 @@ public class ParserTests
         Lexer lexer = new Lexer(input);
         Parser parser = new Parser(lexer);
         Ast program = parser.ParseProgram();
-        TestUtils.CheckParserErrors(parser.Errors());
+        ParserTestUtils.CheckParserErrors(parser.Errors());
 
         if (program.Statements.Count != 1)
         {
@@ -114,7 +114,7 @@ public class ParserTests
         Lexer lexer = new Lexer(input);
         Parser parser = new Parser(lexer);
         Ast program = parser.ParseProgram();
-        TestUtils.CheckParserErrors(parser.Errors());
+        ParserTestUtils.CheckParserErrors(parser.Errors());
 
         if (program.Statements.Count != 1)
         {
@@ -159,7 +159,7 @@ public class ParserTests
             Lexer lexer = new Lexer(test.Input);
             Parser parser = new Parser(lexer);
             Ast program = parser.ParseProgram();
-            TestUtils.CheckParserErrors(parser.Errors());
+            ParserTestUtils.CheckParserErrors(parser.Errors());
 
             if (program.Statements.Count != 1)
             {
@@ -184,7 +184,7 @@ public class ParserTests
                 Assert.Fail($"Expected operator {test.Operator}, got {expression.Operator}");
             }
 
-            TestUtils.TestIntegerLiteral(expression.Right, test.IntegerValue);
+            ParserTestUtils.TestIntegerLiteral(expression.Right, test.IntegerValue);
         }
     }
 
@@ -208,7 +208,7 @@ public class ParserTests
             Lexer lexer = new Lexer(test.Input);
             Parser parser = new Parser(lexer);
             Ast program = parser.ParseProgram();
-            TestUtils.CheckParserErrors(parser.Errors());
+            ParserTestUtils.CheckParserErrors(parser.Errors());
 
             if (program.Statements.Count != 1)
             {
@@ -228,14 +228,14 @@ public class ParserTests
             }
 
             InfixExpression expression = (InfixExpression)statement.Expression!;
-            TestUtils.TestIntegerLiteral(expression.Left, test.LeftValue);
+            ParserTestUtils.TestIntegerLiteral(expression.Left, test.LeftValue);
 
             if (expression.Operator != test.Operator)
             {
                 Assert.Fail($"Expected operator {test.Operator}, got {expression.Operator}");
             }
 
-            TestUtils.TestIntegerLiteral(expression.Right, test.RightValue);
+            ParserTestUtils.TestIntegerLiteral(expression.Right, test.RightValue);
         }
     }
 
@@ -267,7 +267,7 @@ public class ParserTests
             Lexer lexer = new Lexer(test.Input);
             Parser parser = new Parser(lexer);
             Ast program = parser.ParseProgram();
-            TestUtils.CheckParserErrors(parser.Errors());
+            ParserTestUtils.CheckParserErrors(parser.Errors());
 
             string actual = program.ToString();
             if (actual != test.Expected)

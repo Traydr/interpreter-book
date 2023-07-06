@@ -23,7 +23,7 @@ public class LexerTests
             new Token(TokenType.Eof, ""),
         };
 
-        TestUtils.CompareExpectedTokens(tokens, input);
+        LexerTestUtils.CompareExpectedTokens(tokens, input);
         Assert.Pass();
     }
 
@@ -82,7 +82,7 @@ public class LexerTests
             new Token(TokenType.Eof, ""),
         };
 
-        TestUtils.CompareExpectedTokens(tokens, input);
+        LexerTestUtils.CompareExpectedTokens(tokens, input);
         Assert.Pass();
     }
 
@@ -155,7 +155,7 @@ public class LexerTests
             new Token(TokenType.Eof, ""),
         };
 
-        TestUtils.CompareExpectedTokens(tokens, input);
+        LexerTestUtils.CompareExpectedTokens(tokens, input);
         Assert.Pass();
     }
 
@@ -250,7 +250,7 @@ public class LexerTests
             new Token(TokenType.Eof, ""),
         };
 
-        TestUtils.CompareExpectedTokens(tokens, input);
+        LexerTestUtils.CompareExpectedTokens(tokens, input);
         Assert.Pass();
     }
 
@@ -356,7 +356,7 @@ public class LexerTests
             new Token(TokenType.Eof, ""),
         };
 
-        TestUtils.CompareExpectedTokens(tokens, input);
+        LexerTestUtils.CompareExpectedTokens(tokens, input);
         Assert.Pass();
     }
 }
