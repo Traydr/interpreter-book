@@ -228,14 +228,7 @@ public class ParserTests
             }
 
             InfixExpression expression = (InfixExpression)statement.Expression!;
-            ParserTestUtils.TestIntegerLiteral(expression.Left, test.LeftValue);
-
-            if (expression.Operator != test.Operator)
-            {
-                Assert.Fail($"Expected operator {test.Operator}, got {expression.Operator}");
-            }
-
-            ParserTestUtils.TestIntegerLiteral(expression.Right, test.RightValue);
+            ParserTestUtils.TestInfixExpression(expression, test.LeftValue, test.Operator, test.RightValue);
         }
     }
 

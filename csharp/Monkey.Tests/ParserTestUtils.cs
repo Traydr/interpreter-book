@@ -70,4 +70,41 @@ public static class ParserTestUtils
             Assert.Fail($"Expected identifier.Token.Literal {value}, got {identifier.Token.Literal}");
         }
     }
+
+    public static void TestLiteralExpression(IExpression? expression, Object expected)
+    {
+        switch (expected)
+        {
+            case int castedInt:
+                TestIntegerLiteral(expression!, castedInt);
+                break;
+            case long castedLong:
+                TestIntegerLiteral(expression!, castedLong);
+                break;
+            case string castedString:
+                TestIdentifier(expression!, castedString);
+                break;
+            default:
+                Assert.Fail($"Type of expression not handled: {expression?.GetType()}");
+                break;
+        }
+    }
+
+    public static void TestInfixExpression(IExpression expression, Object left, string op, Object right)
+    {
+        if (expression.GetType() != typeof(InfixExpression))
+        {
+            Assert.Fail($"Expected InfixExpression, got {expression.GetType()}");
+        }
+
+        InfixExpression infixExpression = (InfixExpression)expression;
+        TestLiteralExpression(infixExpression.Left, left);
+
+        if (infixExpression.Operator != op)
+        {
+            Assert.Fail($"Expected {op}, got {infixExpression.Operator}");
+        }
+
+        TestLiteralExpression(infixExpression.Right, right);
+    }
 }
